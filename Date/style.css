@@ -1,0 +1,10 @@
+body {
+    background-color: rgb(176, 176, 249);
+    display: block;
+}
+
+section {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
