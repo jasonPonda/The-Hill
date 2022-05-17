@@ -1,25 +1,37 @@
+
 /*SUBSCRIBE HERE FOR API KEY: https://home.openweathermap.org/users/sign_up*/
 const apiKey = "9534500b6d692527c7b3f475ffc1de7f";
 
 let weather = {
     apiKey: "9534500b6d692527c7b3f475ffc1de7f",
+
     fetchWeather: function (city) {
         fetch(
             "https://api.openweathermap.org/data/2.5/weather?q=" +
             city +
             "&units=metric&appid=" +
             this.apiKey
+
         )
             .then((reponse) => {
                 if (!reponse.ok) {
-                    alert('No weather Found.')
-                    throw new Error('No weather found')
+                    console.log('No weather Found.')
+
                 }
                 return reponse.json()
             })
             .then((data) => this.displayWeather(data))
+
+        let array = []
+
+        let todo = localStorage.getItem('city')
+        array = JSON.parse(todo)
+        array.push(`${city.value}`)
+        city.value = ""
+        localStorage.setItem('city', JSON.stringify(array))
     },
     displayWeather: function (data) {
+
         const { name } = data;
         const { icon, description } = data.weather[0];
         const { temp, humidity } = data.main;
@@ -32,22 +44,25 @@ let weather = {
         document.querySelector('.wind').innerHTML = 'Wind speed: ' + speed + " km/h";
         document.querySelector('.weather').classList.remove('loading');
         document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + name + "')";
+
     },
     search: function () {
         this.fetchWeather(document.querySelector('.search-bar').value);
     },
+
 };
 
-let todoArray = []
 
 document.querySelector('.search button').addEventListener('click', function () {
     weather.search();
 });
 
-document.querySelector('.search-bar').addEventListener('keyup', function (event) {
-    weather.search();
-})
+document.querySelector('.search-bar').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        weather.search();
+    }
 
+})
 
 
 //horloge
@@ -70,3 +85,11 @@ function clock2() {
 }
 
 setInterval(clock2, 1000);
+
+
+
+
+
+
+
+
